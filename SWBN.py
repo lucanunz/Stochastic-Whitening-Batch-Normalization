@@ -1,4 +1,10 @@
 #author: Luca Nunziante
+import tensorflow as tf
+import tensorflow.keras as keras
+import tensorflow.keras.layers as layers
+import matplotlib.pyplot as plt
+from keras import backend as K
+import numpy as np
 
 class SWBN(layers.Layer):
     def __init__(self, criterion="fro", alpha=1e-5):
