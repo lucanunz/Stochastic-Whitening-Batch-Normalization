@@ -6,6 +6,13 @@ import matplotlib.pyplot as plt
 from keras import backend as K
 import numpy as np
 
+def standardize_data(X, moving_mean, moving_var, eps):
+    # Compute reciprocal of square root of the moving variance elementwise
+    inv = tf.cast(tf.math.rsqrt(moving_var + eps), X.dtype)
+    # Normalize
+    Y = (X - moving_mean)*inv
+    return Y
+
 class SWBN(layers.Layer):
     def __init__(self, criterion="fro", alpha=1e-5):
         super(SWBN, self).__init__()
@@ -50,7 +57,7 @@ class SWBN(layers.Layer):
         delta=upper
       else:
         raise ValueError('Criterion should be either flo or kl, instead found ' + self.criterion)
-        
+	
       value = w - alpha*delta
       value = 0.5 * (value+tf.transpose(value))
       return w.assign(value)
